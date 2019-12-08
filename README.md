@@ -2,6 +2,12 @@
 
 DON'T RUN THIS EVER ON PRODUCTION!!!
 
+## Run
+
+```bash
+$ docker run --rm -p 8080:8080 psanetra/demo-pod:latest
+```
+
 ## Features
 
 * Save state in a volume
