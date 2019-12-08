@@ -1,0 +1,9 @@
+<h1>Watch Files</h1>
+<section>
+  <article *ngFor="let file of watchedFiles$ | async">
+    <mat-card>
+      <mat-card-title>{{file.name}}</mat-card-title>
+      <pre>{{file.content$ | async}}</pre>
+    </mat-card>
+  </article>
+</section>

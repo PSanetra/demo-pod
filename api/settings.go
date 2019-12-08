@@ -8,6 +8,7 @@ import (
 )
 
 type Settings struct {
+	CorsOrigins []string
 	LivenessSettings *liveness.Settings
 	NotesSettings notes.Settings
 	ReadinessSettings *readiness.Settings

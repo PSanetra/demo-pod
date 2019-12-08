@@ -1,0 +1,23 @@
+<section>
+  <article>
+    <h1>Readiness</h1>
+    <mat-card>
+      <mat-card-content>
+        <mat-form-field>
+          <input type="text"
+                 matInput
+                 [ngxTimepicker]="timepicker"
+                 [format]="24"
+                 placeholder="Ready after (UTC)"
+                 [formControl]="control$ | async"
+                 readonly/>
+        </mat-form-field>
+
+        <ngx-material-timepicker #timepicker [format]="24"></ngx-material-timepicker>
+
+        {{ control$ | async | latestValue$ | async | readinessDescription }}
+      </mat-card-content>
+    </mat-card>
+  </article>
+</section>
+

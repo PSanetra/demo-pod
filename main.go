@@ -62,7 +62,8 @@ func main() {
 func init() {
 	rootCmd.PersistentFlags().String("log-level", logger.DEFAULT_LOG_LEVEL.String(), "panic | fatal | error | warn | info | debug | trace")
 	rootCmd.PersistentFlags().StringVar(&settings.NotesSettings.StatePath, "notes-state-file-path", "./notes.json", "")
-	rootCmd.PersistentFlags().StringToStringVar(&settings.WatchSettings.FileWhitelist, "watch", map[string]string{}, "Whitelist for files retrievable via /watch/{key}. Format of one option is [key=/path/to/file]")
+	rootCmd.PersistentFlags().StringSliceVar(&settings.CorsOrigins, "cors-origin", []string{}, "defines an allowed origin")
+	rootCmd.PersistentFlags().StringToStringVar(&settings.WatchSettings.FileWhitelist, "watch", map[string]string{}, "Whitelist for files retrievable via /watch/{key}. Format of one option is key=/path/to/file")
 }
 
 func processLogLevelFlag(cmd *cobra.Command) {

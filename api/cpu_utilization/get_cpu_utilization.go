@@ -23,7 +23,7 @@ func GetCpuUtilizationHandler() func(c *gin.Context) {
 			return
 		}
 
-		cpuResponse := make([]Cpu, count)
+		cpuResponse := make([]int, count)
 
 		cpuTimes, err := cpu.Percent(1 * time.Second, true)
 
@@ -34,7 +34,7 @@ func GetCpuUtilizationHandler() func(c *gin.Context) {
 		}
 
 		for i, c := range cpuTimes {
-			cpuResponse[i].Utilization = int(c)
+			cpuResponse[i] = int(c)
 		}
 
 		c.JSON(http.StatusOK, cpuResponse)

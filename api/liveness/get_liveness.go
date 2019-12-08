@@ -14,11 +14,7 @@ func GetLivenessHandler(settings *Settings) func(c *gin.Context) {
 
 		alive, _ := settings.alive.Load().(bool)
 
-		if alive {
-			c.JSON(http.StatusOK, &Liveness{Alive: alive})
-		} else {
-			c.Status(http.StatusInternalServerError)
-		}
+		c.JSON(http.StatusOK, &Liveness{Alive: alive})
 
 	}
 }

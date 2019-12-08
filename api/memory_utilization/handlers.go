@@ -6,5 +6,6 @@ func AddHandlers(
 	router *gin.RouterGroup,
 ) {
 	AddGetMemoryHandler(router)
-	AddPutMemoryUsageHandler(router)
+	AddGetMemoryBlockHandler(router)
+	AddPutMemoryBlockHandler(router)
 }

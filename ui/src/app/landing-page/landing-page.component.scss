@@ -1,0 +1,13 @@
+@import "../../_shared/styles/common";
+
+mat-card {
+  margin-bottom: $common_margin;
+
+  text-decoration: none;
+
+  mat-card-title {
+    mat-icon {
+      vertical-align: text-bottom;
+    }
+  }
+}

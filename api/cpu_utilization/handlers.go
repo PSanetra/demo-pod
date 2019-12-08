@@ -6,5 +6,6 @@ func AddHandlers(
 	router *gin.RouterGroup,
 ) {
 	AddGetCpuUtilizationHandler(router)
+	AddGetCpuStressHandler(router)
 	AddPutCpuStressHandler(router)
 }

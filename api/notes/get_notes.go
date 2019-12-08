@@ -18,13 +18,13 @@ func GetNotesHandler(settings *Settings) func(c *gin.Context) {
 
 		data, err := ioutil.ReadFile(settings.StatePath)
 
-		if err == os.ErrNotExist {
+		if os.IsNotExist(err) {
 			logger.Logger.Errorln("Could not find file: ", err)
 			c.AbortWithStatus(http.StatusNotFound)
 			return
 		}
 
-		if err == os.ErrPermission {
+		if os.IsPermission(err) {
 			logger.Logger.Errorln("Could not access file: ", err)
 			c.AbortWithStatus(http.StatusForbidden)
 			return

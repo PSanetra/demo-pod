@@ -1,0 +1,20 @@
+<h1>Memory</h1>
+<section>
+  <article>
+    <mat-card>
+      <mat-card-title>Memory</mat-card-title>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput type="number" placeholder="Blocked Memory" [formControl]="blockControl$ | async" />
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>Utilization</mat-card-title>
+      <mat-card-content *ngIf="utilization$ | async as utilization">
+        <p>In Use: {{ utilization.inUse }}</p>
+        <p>Available: {{ utilization.available }}</p>
+      </mat-card-content>
+    </mat-card>
+  </article>
+</section>

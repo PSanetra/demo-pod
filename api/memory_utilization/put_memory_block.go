@@ -9,14 +9,14 @@ import (
 	"sync"
 )
 
-func AddPutMemoryUsageHandler(router *gin.RouterGroup) {
-	router.PUT("/memory-usage", PutMemoryUsageHandler())
+func AddPutMemoryBlockHandler(router *gin.RouterGroup) {
+	router.PUT("/memory-block", PutMemoryBlockHandler())
 }
 
 var memoryBlock []byte
-var memoryBlockMutex sync.Mutex
+var memoryBlockMutex sync.RWMutex
 
-func PutMemoryUsageHandler() func(c *gin.Context) {
+func PutMemoryBlockHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
 
 		var bytes int

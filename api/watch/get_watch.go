@@ -60,8 +60,16 @@ func watchFile(c *gin.Context, key string, path string) {
 	defer watcher.Close()
 
 	err = watcher.Add(path)
+
+	if os.IsNotExist(err) {
+		logger.Logger.Errorln("File does not exist ", path)
+		c.String(http.StatusNotFound, "File does not exist")
+		return
+	}
+
 	if err != nil {
 		logger.Logger.Errorln("Can not watch ", path, ": ", err)
+		c.Status(http.StatusInternalServerError)
 		return
 	}
 
@@ -122,13 +130,13 @@ func sendFileEvent(c *gin.Context, eventType string, path string, previousHash [
 func returnFile(c *gin.Context, path string) {
 	data, err := ioutil.ReadFile(path)
 
-	if err == os.ErrNotExist {
+	if os.IsNotExist(err) {
 		logger.Logger.Errorln("Could not find file: ", err)
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
-	if err == os.ErrPermission {
+	if os.IsPermission(err) {
 		logger.Logger.Errorln("Could not access file: ", err)
 		c.AbortWithStatus(http.StatusForbidden)
 		return

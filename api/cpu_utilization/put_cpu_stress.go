@@ -2,9 +2,9 @@ package cpu_utilization
 
 import (
 	"context"
+	"demo-pod/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"demo-pod/logger"
 	"runtime"
 	"sync"
 )
@@ -14,7 +14,7 @@ func AddPutCpuStressHandler(router *gin.RouterGroup) {
 }
 
 var stressCancelFuncs []context.CancelFunc
-var stressCancelFuncsMutex sync.Mutex
+var stressCancelFuncsMutex sync.RWMutex
 
 func PutCpuStressHandler() func(c *gin.Context) {
 	return func(c *gin.Context) {
@@ -55,6 +55,15 @@ func cancelExistingStressRoutines() {
 			cancel()
 		}
 	}
+}
+
+func getStressCount() int {
+
+	stressCancelFuncsMutex.RLock()
+	defer stressCancelFuncsMutex.RUnlock()
+
+	return len(stressCancelFuncs)
+
 }
 
 func stress(ctx context.Context) {

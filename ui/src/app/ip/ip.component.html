@@ -1,0 +1,34 @@
+<h1>IP Addresses</h1>
+<section>
+  <article>
+    <h2>Client</h2>
+    <table mat-table [dataSource]="clientIpList$" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ip">
+        <th mat-header-cell *matHeaderCellDef> IP </th>
+        <td mat-cell *matCellDef="let element" class="value-cell"> {{element.ip}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['type', 'ip']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['type', 'ip'];"></tr>
+    </table>
+  </article>
+  <article>
+    <h2>Pod</h2>
+    <table mat-table [dataSource]="podIpList$" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="ip">
+        <th mat-header-cell *matHeaderCellDef> IP </th>
+        <td mat-cell *matCellDef="let element" class="value-cell"> {{element}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['ip']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['ip'];"></tr>
+    </table>
+  </article>
+</section>

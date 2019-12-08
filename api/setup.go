@@ -1,8 +1,6 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
 	"demo-pod/api/cpu_utilization"
 	"demo-pod/api/environment"
 	"demo-pod/api/ip"
@@ -12,9 +10,10 @@ import (
 	"demo-pod/api/readiness"
 	"demo-pod/api/watch"
 	"demo-pod/logger"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
 )
-
-var apiPrefix = "/api"
 
 func Setup(settings *Settings) *gin.Engine {
 
@@ -24,9 +23,25 @@ func Setup(settings *Settings) *gin.Engine {
 	engine.Use(
 		logger.GinLoggerMiddleware(gin.LoggerConfig{}, logger.Logger),
 		gin.Recovery(),
+		static.Serve("/", static.LocalFile("./static", true)),
 	)
 
+	for _, origin := range settings.CorsOrigins {
+
+		engine.Use(cors.New(cors.Config{
+			AllowOrigins:     []string{origin},
+			AllowMethods:     []string{"PUT", "GET"},
+			AllowHeaders:     []string{"content-type"},
+			AllowCredentials: true,
+		}))
+
+	}
+
 	addApiHandlers(engine, settings)
+
+	engine.NoRoute(func(c *gin.Context) {
+		c.File("./static/index.html")
+	})
 
 	return engine
 
@@ -47,7 +62,4 @@ func addApiHandlers(
 	readiness.AddHandlers(apiRouterGroup, settings.ReadinessSettings)
 	watch.AddHandlers(apiRouterGroup, &settings.WatchSettings)
 
-	engine.NoRoute(func(c *gin.Context) {
-		c.AbortWithStatus(http.StatusBadRequest)
-	})
 }
