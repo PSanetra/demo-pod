@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
+import { apiUri } from '../../_shared/functions/api-uri';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,13 @@ export class LivenessService {
   }
 
   getLiveness(): Observable<boolean> {
-    return this.http.get<{alive: boolean}>(`${environment.apiUri}/liveness`).pipe(
+    return this.http.get<{alive: boolean}>(`${apiUri()}/liveness`).pipe(
       map(r => r.alive)
     );
   }
 
   putLiveness(alive: boolean): Observable<void> {
-    return this.http.put<void>(`${environment.apiUri}/liveness`, {
+    return this.http.put<void>(`${apiUri()}/liveness`, {
       alive: alive
     });
   }

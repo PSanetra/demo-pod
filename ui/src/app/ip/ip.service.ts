@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { IpInfo } from './ip-info';
+import { apiUri } from '../../_shared/functions/api-uri';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,6 @@ export class IpService {
   }
 
   getIpInfo(): Observable<IpInfo> {
-    return this.http.get<IpInfo>(`${environment.apiUri}/ip`);
+    return this.http.get<IpInfo>(`${apiUri()}/ip`);
   }
 }

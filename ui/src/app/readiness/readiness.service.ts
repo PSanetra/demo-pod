@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
+import { apiUri } from '../../_shared/functions/api-uri';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class ReadinessService {
   }
 
   getReadiness(): Observable<string> {
-    return this.http.get<{ready_after: string}>(`${environment.apiUri}/readiness`).pipe(
+    return this.http.get<{ready_after: string}>(`${apiUri()}/readiness`).pipe(
       map(r => {
         const match = /\d\d:\d\d/.exec(r.ready_after);
 
@@ -29,7 +29,7 @@ export class ReadinessService {
     let readyAfter = JSON.stringify(new Date()).replace(/\d\d:\d\d:\d\d/, time + ':00')
     readyAfter = readyAfter.replace(/"/g, '');
 
-    return this.http.put<void>(`${environment.apiUri}/readiness`, {
+    return this.http.put<void>(`${apiUri()}/readiness`, {
       ready_after: readyAfter
     });
   }

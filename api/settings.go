@@ -10,6 +10,7 @@ import (
 
 type Settings struct {
 	StartupDelay      time.Duration
+	BasePath          string
 	CorsOrigins       []string
 	LivenessSettings  *liveness.Settings
 	NotesSettings     notes.Settings

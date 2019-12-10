@@ -75,6 +75,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&settings.NotesSettings.StatePath, "notes-state-file-path", "./notes.json", "")
 	rootCmd.PersistentFlags().DurationVar(&settings.StartupDelay, "startup-delay", 0, "specifies a delay on startup (e.g. '10s')")
 	rootCmd.PersistentFlags().StringSliceVar(&settings.CorsOrigins, "cors-origin", []string{}, "defines an allowed origin")
+	rootCmd.PersistentFlags().StringVar(&settings.BasePath, "base-path", "/", "defines a base path prefix for all http endpoints")
 	rootCmd.PersistentFlags().StringToStringVar(&settings.WatchSettings.FileWhitelist, "watch", map[string]string{}, "Whitelist for files retrievable via /watch/{key}. Format of one option is key=/path/to/file")
 }
 

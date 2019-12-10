@@ -11,7 +11,6 @@ import (
 	"demo-pod/api/watch"
 	"demo-pod/logger"
 	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,12 +22,14 @@ func Setup(settings *Settings) *gin.Engine {
 	engine.Use(
 		logger.GinLoggerMiddleware(gin.LoggerConfig{}, logger.Logger),
 		gin.Recovery(),
-		static.Serve("/", static.LocalFile("./static", true)),
+		serveStatic(settings.BasePath),
 	)
+
+	router := engine.Group(settings.BasePath)
 
 	for _, origin := range settings.CorsOrigins {
 
-		engine.Use(cors.New(cors.Config{
+		router.Use(cors.New(cors.Config{
 			AllowOrigins:     []string{origin},
 			AllowMethods:     []string{"PUT", "GET"},
 			AllowHeaders:     []string{"content-type"},
@@ -37,21 +38,22 @@ func Setup(settings *Settings) *gin.Engine {
 
 	}
 
-	addApiHandlers(engine, settings)
+	addApiHandlers(router, settings)
 
-	engine.NoRoute(func(c *gin.Context) {
-		c.File("./static/index.html")
-	})
+	indexHtml := renderIndex(settings)
+
+	router.GET("/index.html", indexHandler(indexHtml, settings.BasePath))
+	engine.NoRoute(indexHandler(indexHtml, settings.BasePath))
 
 	return engine
 
 }
 
 func addApiHandlers(
-	engine *gin.Engine,
+	router *gin.RouterGroup,
 	settings *Settings,
 ) {
-	apiRouterGroup := engine.Group("/api")
+	apiRouterGroup := router.Group("/api")
 
 	environment.AddGetEnvHandler(apiRouterGroup)
 	cpu_utilization.AddHandlers(apiRouterGroup)
