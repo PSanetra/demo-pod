@@ -5,12 +5,14 @@ import (
 	"demo-pod/api/notes"
 	"demo-pod/api/readiness"
 	"demo-pod/api/watch"
+	"time"
 )
 
 type Settings struct {
-	CorsOrigins []string
-	LivenessSettings *liveness.Settings
-	NotesSettings notes.Settings
+	StartupDelay      time.Duration
+	CorsOrigins       []string
+	LivenessSettings  *liveness.Settings
+	NotesSettings     notes.Settings
 	ReadinessSettings *readiness.Settings
-	WatchSettings watch.Settings
+	WatchSettings     watch.Settings
 }
