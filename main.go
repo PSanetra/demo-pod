@@ -27,7 +27,7 @@ DON'T RUN THIS EVER ON PRODUCTION!!!
 
 demo-pod can be used in Kubernetes workshops to demonstrate different pod properties. 
 
-demo-pod binds to 0.0.0.0:80 by default if run without TLS and 0.0.0.0:443 if run with TLS.
+demo-pod binds to 0.0.0.0:8080 by default if run without TLS and 0.0.0.0:8443 if run with TLS.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -37,25 +37,39 @@ demo-pod binds to 0.0.0.0:80 by default if run without TLS and 0.0.0.0:443 if ru
 
 		ginEngine := api.Setup(&settings)
 
-		addr := ""
+		address := ""
 
 		if len(args) > 0 {
-			addr = args[0]
+			address = args[0]
 		}
 
-		var err error
-
-		if settings.TlsCertPath == "" || settings.TlsKeyPath == "" {
-			err = ginEngine.Run(addr)
-		} else {
-			err = ginEngine.RunTLS(addr, settings.TlsCertPath, settings.TlsKeyPath)
-		}
-
-		if err != nil {
-			logger.Logger.Fatalln("Gin error: ", err)
-		}
+		run(ginEngine, address)
 
 	},
+}
+
+func run(engine *gin.Engine, address string) {
+	var err error
+
+	useTls := settings.TlsCertPath != "" && settings.TlsKeyPath != ""
+
+	if useTls {
+		if address == "" {
+			address = ":8080"
+		}
+
+		err = engine.Run(address)
+	} else {
+		if address == "" {
+			address = ":8443"
+		}
+
+		err = engine.RunTLS(address, settings.TlsCertPath, settings.TlsKeyPath)
+	}
+
+	if err != nil {
+		logger.Logger.Fatalln("Gin error: ", err)
+	}
 }
 
 func delayStartup() {
