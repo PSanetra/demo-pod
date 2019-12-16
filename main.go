@@ -27,7 +27,7 @@ DON'T RUN THIS EVER ON PRODUCTION!!!
 
 demo-pod can be used in Kubernetes workshops to demonstrate different pod properties. 
 
-demo-pod binds to 0.0.0.0:8080 by default.
+demo-pod binds to 0.0.0.0:80 by default if run without TLS and 0.0.0.0:443 if run with TLS.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -37,7 +37,19 @@ demo-pod binds to 0.0.0.0:8080 by default.
 
 		ginEngine := api.Setup(&settings)
 
-		err := ginEngine.Run(args...)
+		addr := ""
+
+		if len(args) > 0 {
+			addr = args[0]
+		}
+
+		var err error
+
+		if settings.TlsCertPath == "" || settings.TlsKeyPath == "" {
+			err = ginEngine.Run(addr)
+		} else {
+			err = ginEngine.RunTLS(addr, settings.TlsCertPath, settings.TlsKeyPath)
+		}
 
 		if err != nil {
 			logger.Logger.Fatalln("Gin error: ", err)
@@ -71,6 +83,8 @@ func main() {
 }
 
 func init() {
+	rootCmd.PersistentFlags().StringVar(&settings.TlsKeyPath, "tls-key", "", "path to tls key file")
+	rootCmd.PersistentFlags().StringVar(&settings.TlsCertPath, "tls-cert", "", "path to tls certificate file")
 	rootCmd.PersistentFlags().String("log-level", logger.DEFAULT_LOG_LEVEL.String(), "panic | fatal | error | warn | info | debug | trace")
 	rootCmd.PersistentFlags().StringVar(&settings.NotesSettings.StatePath, "notes-state-file-path", "./notes.json", "")
 	rootCmd.PersistentFlags().DurationVar(&settings.StartupDelay, "startup-delay", 0, "specifies a delay on startup (e.g. '10s')")

@@ -9,6 +9,8 @@ import (
 )
 
 type Settings struct {
+	TlsKeyPath        string
+	TlsCertPath       string
 	StartupDelay      time.Duration
 	BasePath          string
 	CorsOrigins       []string
