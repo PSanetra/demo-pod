@@ -53,7 +53,7 @@ func run(engine *gin.Engine, address string) {
 
 	useTls := settings.TlsCertPath != "" && settings.TlsKeyPath != ""
 
-	if useTls {
+	if !useTls {
 		if address == "" {
 			address = ":8080"
 		}
