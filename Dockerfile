@@ -5,7 +5,7 @@ WORKDIR /src
 COPY ./ui/package.json ./
 COPY ./ui/package-lock.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY ./ui/ ./
 
@@ -21,7 +21,7 @@ RUN go test -v -vet=off ./...
 
 RUN GOOS=linux GARCH=amd64 go build -o demo-pod -ldflags="-s -w" main.go
 
-FROM alpine:3.10
+FROM alpine:3.11
 
 WORKDIR /app
 
