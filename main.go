@@ -21,9 +21,9 @@ var settings = api.Settings{
 
 var rootCmd = &cobra.Command{
 	Use:   "demo-pod [<ip>:<port>]",
-	Short: "DON'T RUN THIS EVER ON PRODUCTION!!!",
+	Short: "This application provides some useful features to demonstrate certain aspects of Pods inside a Kubernetes cluster.",
 	Long: `
-DON'T RUN THIS EVER ON PRODUCTION!!!
+This application provides some useful features to demonstrate certain aspects of Pods inside a Kubernetes cluster.
 
 demo-pod can be used in Kubernetes workshops to demonstrate different pod properties. 
 

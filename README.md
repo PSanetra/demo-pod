@@ -1,11 +1,13 @@
 # Kubernetes Demo Pod
 
-DON'T RUN THIS EVER ON PRODUCTION!!!
+This application provides some useful features to demonstrate certain aspects of Pods inside a Kubernetes cluster.
+
+<img src="./screenshot.png" alt="screenshot" width="600" />
 
 ## Run
 
 ```bash
-$ docker run --rm -p 8080:8080 psanetra/demo-pod:latest
+$ docker run -it --rm -p 8080:8080 psanetra/demo-pod:latest
 ```
 
 ## Features
@@ -14,8 +16,8 @@ $ docker run --rm -p 8080:8080 psanetra/demo-pod:latest
 * Save state in a volume
 * Read state from a volume
 * Show environment variables
-* Show changing ConfigMap values (via `--watch` option)
-* Show changing Secret values (via `--watch` option)
+* Show changing ConfigMap values via `--watch` option (if supported)
+* Show changing Secret values via `--watch` option (if supported)
 * Control liveness
 * Control readiness
 * Control cpu utilization
