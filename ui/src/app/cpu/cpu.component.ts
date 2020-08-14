@@ -3,14 +3,14 @@ import { Observable } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { CpuService } from './cpu.service';
 import { FormControl } from '@angular/forms';
-import { componentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { componentDestroyed, OnDestroyMixin } from '@w11k/ngx-componentdestroyed';
 
 @Component({
   selector: 'app-cpu',
   templateUrl: './cpu.component.html',
   styleUrls: ['./cpu.component.scss']
 })
-export class CpuComponent implements OnDestroy{
+export class CpuComponent extends OnDestroyMixin implements OnDestroy{
 
   stress$: Observable<number> = this.cpuService.getCpuStress().pipe(shareReplay({bufferSize: 1, refCount: true}));
   utilization$: Observable<number[]> = this.cpuService.getCpuUtilization().pipe(shareReplay({bufferSize: 1, refCount: true}));
@@ -22,6 +22,7 @@ export class CpuComponent implements OnDestroy{
   );
 
   constructor(private cpuService: CpuService) {
+    super();
 
     this.threadsControl$.pipe(
       switchMap(c => c.valueChanges),

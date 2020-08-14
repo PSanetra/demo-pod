@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, map, shareReplay, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { NotesService } from './notes.service';
-import { componentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { componentDestroyed, OnDestroyMixin } from '@w11k/ngx-componentdestroyed';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss']
 })
-export class NotesComponent implements OnDestroy {
+export class NotesComponent extends OnDestroyMixin implements OnDestroy {
 
   control$: Observable<FormControl> = this.notesService.getNotes().pipe(
     map(v => new FormControl(v)),
@@ -20,6 +20,7 @@ export class NotesComponent implements OnDestroy {
   );
 
   constructor(private notesService: NotesService) {
+    super();
 
     this.control$.pipe(
       switchMap(c => c.valueChanges),

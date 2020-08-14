@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { componentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { componentDestroyed, OnDestroyMixin } from '@w11k/ngx-componentdestroyed';
 import { MemoryService } from './memory.service';
 import { MemoryUtilization } from './memory-utilization';
 
@@ -11,7 +11,7 @@ import { MemoryUtilization } from './memory-utilization';
   templateUrl: './memory.component.html',
   styleUrls: ['./memory.component.scss']
 })
-export class MemoryComponent implements OnDestroy{
+export class MemoryComponent extends OnDestroyMixin implements OnDestroy {
 
   block$: Observable<number> = this.memoryService.getMemoryBlock().pipe(shareReplay({bufferSize: 1, refCount: true}));
   utilization$: Observable<MemoryUtilization> = this.memoryService.getMemoryUtilization().pipe(
@@ -25,6 +25,7 @@ export class MemoryComponent implements OnDestroy{
   );
 
   constructor(private memoryService: MemoryService) {
+    super();
 
     this.blockControl$.pipe(
       switchMap(c => c.valueChanges),

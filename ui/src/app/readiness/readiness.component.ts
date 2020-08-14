@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, map, shareReplay, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { componentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { componentDestroyed, OnDestroyMixin } from '@w11k/ngx-componentdestroyed';
 import { Observable } from 'rxjs';
 import { ReadinessService } from './readiness.service';
 
@@ -10,7 +10,7 @@ import { ReadinessService } from './readiness.service';
   templateUrl: './readiness.component.html',
   styleUrls: ['./readiness.component.scss']
 })
-export class ReadinessComponent implements OnDestroy {
+export class ReadinessComponent extends OnDestroyMixin implements OnDestroy {
 
   control$: Observable<FormControl> = this.readinessService.getReadiness().pipe(
     map(v => new FormControl(v)),
@@ -20,6 +20,7 @@ export class ReadinessComponent implements OnDestroy {
   );
 
   constructor(private readinessService: ReadinessService) {
+    super();
 
     this.control$.pipe(
       switchMap(c => c.valueChanges),
