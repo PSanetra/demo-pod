@@ -11,7 +11,7 @@ COPY ./ui/ ./
 
 RUN npm run build:prod
 
-FROM golang:1.13-alpine as build-go
+FROM golang:1.21-alpine as build-go
 
 WORKDIR /src
 
@@ -21,7 +21,7 @@ RUN go test -v -vet=off ./...
 
 RUN GOOS=linux GARCH=amd64 go build -o demo-pod -ldflags="-s -w" main.go
 
-FROM alpine:3.11
+FROM alpine:3.18
 
 WORKDIR /app
 

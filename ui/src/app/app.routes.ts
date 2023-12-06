@@ -17,6 +17,11 @@ export const routes: Routes = [
     loadChildren: () => import('./env/env.module').then(m => m.EnvModule)
   },
   {
+    path: 'http-headers',
+    pathMatch: 'full',
+    loadChildren: () => import('./http-headers/http-headers.module').then(m => m.HttpHeadersModule)
+  },
+  {
     path: 'ip',
     pathMatch: 'full',
     loadChildren: () => import('./ip/ip.module').then(m => m.IpModule)

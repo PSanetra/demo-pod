@@ -3,6 +3,7 @@ package api
 import (
 	"demo-pod/api/cpu_utilization"
 	"demo-pod/api/environment"
+	"demo-pod/api/http_headers"
 	"demo-pod/api/ip"
 	"demo-pod/api/liveness"
 	"demo-pod/api/memory_utilization"
@@ -58,6 +59,7 @@ func addApiHandlers(
 	environment.AddGetEnvHandler(apiRouterGroup)
 	cpu_utilization.AddHandlers(apiRouterGroup)
 	ip.AddGetIpHandler(apiRouterGroup)
+	http_headers.AddGetHttpHeadersHandler(apiRouterGroup)
 	liveness.AddHandlers(apiRouterGroup, settings.LivenessSettings)
 	memory_utilization.AddHandlers(apiRouterGroup)
 	notes.AddHandlers(apiRouterGroup, &settings.NotesSettings)

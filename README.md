@@ -25,3 +25,4 @@ $ docker run -it --rm -p 8080:8080 psanetra/demo-pod:latest
 * Show available and used memory
 * Show client IP
 * Show Pod IPs
+* Show request http headers behind ingress controller
